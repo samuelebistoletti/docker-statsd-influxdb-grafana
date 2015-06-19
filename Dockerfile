@@ -6,12 +6,12 @@ ENV STATSD_VERSION 0.7.2
 ENV INFLUXDB_VERSION 0.9.0
 ENV GRAFANA_VERSION 2.0.2
 
-# InfluxDB Defaults
-ENV PRE_CREATE_DB data grafana
+# Database Defaults
+ENV PRE_CREATE_DB data
 ENV INFLUXDB_DATA_USER data
 ENV INFLUXDB_DATA_PW data
-ENV INFLUXDB_GRAFANA_USER grafana
-ENV INFLUXDB_GRAFANA_PW grafana
+ENV MYSQL_GRAFANA_USER grafana
+ENV MYSQL_GRAFANA_PW grafana
 
 # Environment variables
 ENV DEBIAN_FRONTEND noninteractive
@@ -32,6 +32,8 @@ RUN apt-get -y --force-yes install\
  git\
  htop\
  libfontconfig\
+ mysql-client\
+ mysql-server\
  net-tools\
  openssh-server\
  sudo\
@@ -49,6 +51,11 @@ RUN mkdir -p /var/log/supervisor
 
 # Create support directories
 RUN mkdir -p /var/run/sshd
+
+# Configure MySql
+ADD mysql/run.sh /usr/local/bin/run_mysql
+ADD scripts/setup_mysql.sh /tmp/setup_mysql.sh
+RUN /tmp/setup_mysql.sh
 
 # Add Nodejs repository and install it
 ADD scripts/setup_nodejs.sh /tmp/setup_nodejs.sh

@@ -34,9 +34,6 @@ else
     echo "=> Creating User for database: data"
     curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=CREATE USER ${INFLUXDB_DATA_USER} WITH PASSWORD '${INFLUXDB_DATA_PW}'"
     curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=GRANT ALL ON data TO ${INFLUXDB_DATA_USER}"
-    echo "=> Creating User for database: grafana"
-    curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=CREATE USER ${INFLUXDB_GRAFANA_USER} WITH PASSWORD '${INFLUXDB_GRAFANA_PW}'"
-    curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=GRANT ALL ON grafana TO ${INFLUXDB_GRAFANA_USER}"
     echo ""
 
     touch "/.influxdb_configured"
