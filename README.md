@@ -45,9 +45,9 @@ Add datasource and point it to:
 
 localhost:8082
 
-Database: data
-Username: data
-Password: data
+Database: data<br>
+Username: data<br>
+Password: data<br>
 
 ### Databases
 
@@ -61,6 +61,6 @@ Password: grafana<br>
 
 Admin interface: http://localhost:3004<br>
 
-Username: root
-Password: root
+Username: root<br>
+Password: root<br>
 Port:     8082
