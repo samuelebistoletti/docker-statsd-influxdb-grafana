@@ -2,11 +2,9 @@
 
 ## Versions
 
-StatsD:   0.7.2
-
-InfluxDB: 0.9.0
-
-Grafana:  2.0.2
+StatsD:   0.7.2<br>
+InfluxDB: 0.9.0<br>
+Grafana:  2.0.2<br>
 
 ## Quick Start
 
@@ -35,21 +33,21 @@ ssh root@localhost -p 22022
 ```
 Password: root
 
-### Grafene
+### Grafana
 
 Admin interface: http://localhost
 
-Username: root
-Password: root
+Username: root<br>
+Password: root<br>
 
 ### Databases
 
-DB1: data
-Username: data
-Password: data
+DB1: data<br>
+Username: data<br>
+Password: data<br>
 
-DB2: grafana
-Username: grafana
-Password: grafana
+DB2: grafana<br>
+Username: grafana<br>
+Password: grafana<br>
 
 Admin interface: http://localhost:3005
