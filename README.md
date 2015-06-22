@@ -8,7 +8,7 @@ Grafana:  2.0.2
 
 ## Quick Start
 
-To start the container the first time you run it launch:
+To start the container the first time launch:
 
 ```sh
 docker run -d \
@@ -21,7 +21,7 @@ docker run -d \
   samuelebistoletti/docker-statsd-influxdb-grafana
 ```
 
-To stop the container then launch:
+To stop the container launch:
 
 ```sh
 docker stop docker-statsd-influxdb-grafana
