@@ -90,6 +90,9 @@ RUN wget https://grafanarel.s3.amazonaws.com/builds/grafana_${GRAFANA_VERSION}_a
 ADD grafana/grafana.ini /etc/grafana/grafana.ini
 ADD grafana/run.sh /usr/local/bin/run_grafana
 
+# Copy .bashrc
+ADD system/bashrc /root/.bashrc
+
 # Cleanup
 RUN apt-get clean\
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -100,6 +103,7 @@ VOLUME /var/lib/mysql
 VOLUME /var/opt/influxdb
 VOLUME /opt/influxdb
 VOLUME /opt/statsd
+VOLUME /root
 
 # Start Supervisor
 CMD ["/usr/bin/supervisord"]
