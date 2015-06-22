@@ -2,11 +2,9 @@
 
 ## Versions
 
-StatsD:   0.7.2
-
-InfluxDB: 0.9.0
-
-Grafana:  2.0.2
+StatsD:   0.7.2  
+InfluxDB: 0.9.0  
+Grafana:  2.0.2  
 
 ## Quick Start
 
@@ -35,10 +33,9 @@ To start the container again launch:
 docker start docker-statsd-influxdb-grafana
 ```
 
-### Mapped Ports
+## Mapped Ports
 
-```sh
-
+```
 Host		Container		Service
 
 3003		9000			grafana
@@ -47,40 +44,38 @@ Host		Container		Service
 8125		8125			statsd
 22022		22				sshd
 ```
-### SSH
+## SSH
 
 ```sh
 ssh root@localhost -p 22022
 ```
 Password: root
 
-### Grafana
+## Grafana
 
-Admin interface: http://localhost:3003
+Admin interface: <http://localhost:3003>
 
+```
 Username: root
 Password: root
+```
 
 Add datasource and point it to:
 
-localhost:8082
+```
+http://localhost:8086
 
 Database: data
 Username: data
 Password: data
+```
 
-### Databases
+## InfluxDB
 
-DB1: data
-Username: data
-Password: data
+Admin interface: <http://localhost:3004>
 
-DB2: grafana
-Username: grafana
-Password: grafana
-
-Admin interface: http://localhost:3004
-
-Username: root
-Password: root
-Port:     8082
+```
+Username: root  
+Password: root  
+Port:     8086
+```
