@@ -53,7 +53,7 @@ Password: root
 
 ## Grafana
 
-Admin interface: <http://localhost:3003>
+Open <http://localhost:3003>
 
 ```
 Username: root
@@ -79,7 +79,8 @@ Now you are ready to add your first dashboard and launch some query on database.
 ## InfluxDB
 
 ### Web Interface
-Admin interface: <http://localhost:3004>
+
+Open <http://localhost:3004>
 
 ```
 Username: root  
