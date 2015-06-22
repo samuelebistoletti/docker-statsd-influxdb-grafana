@@ -106,8 +106,8 @@ Optional Variables:
 */
 
 {
-  graphiteHost: '127.0.0.1',
-  graphitePort: 2003,
+  graphiteHost: '',
+  graphitePort: '',
   port: 8125,
   flushInterval: 1000,
   backends: [ 'statsd-influxdb-backend' ],
