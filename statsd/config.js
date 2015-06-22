@@ -106,18 +106,18 @@ Optional Variables:
 */
 
 {
-  graphiteHost: "127.0.0.1",
+  graphiteHost: '127.0.0.1',
   graphitePort: 2003,
   port: 8125,
   flushInterval: 1000,
-  backends: [ "statsd-influxdb-backend" ],
+  backends: [ 'statsd-influxdb-backend' ],
 
   influxdb: {
     host: '127.0.0.1',   // InfluxDB host. (default 127.0.0.1)
     port: 8086,          // InfluxDB port. (default 8086)
     version: 0.9,        // InfluxDB version. (default 0.8)
     ssl: false,          // InfluxDB is hosted over SSL. (default false)
-    database: 'data',  // InfluxDB database instance. (required)
+    database: 'data',    // InfluxDB database instance. (required)
     username: 'data',    // InfluxDB database username.
     password: 'data',    // InfluxDB database password.
     flush: {
