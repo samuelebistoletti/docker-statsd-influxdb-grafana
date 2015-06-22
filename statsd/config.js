@@ -109,7 +109,6 @@ Optional Variables:
   graphiteHost: "127.0.0.1",
   graphitePort: 2003,
   port: 8125,
-  flushInterval: 10000,
   backends: [ "statsd-influxdb-backend" ],
 
   influxdb: {
@@ -129,8 +128,8 @@ Optional Variables:
       flushInterval: 1000  // Flush interval for the internal buffer.
                            // (default 1000)
     },
-    includeStatsdMetrics: false, // Send internal statsd metrics to InfluxDB. (default false)
-    includeInfluxdbMetrics: false // Send internal backend metrics to InfluxDB. (default false)
+    includeStatsdMetrics: true, // Send internal statsd metrics to InfluxDB. (default false)
+    includeInfluxdbMetrics: true // Send internal backend metrics to InfluxDB. (default false)
                                   // Requires includeStatsdMetrics to be enabled.
   }
 }

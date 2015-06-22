@@ -80,8 +80,7 @@ ADD statsd/config.js /opt/statsd/config.js
 ADD statsd/run.sh /usr/local/bin/run_statsd
 
 # Install StatsD InfluxDb Backend
-RUN cd /opt/statsd
-RUN npm install statsd-influxdb-backend
+RUN cd /opt/statsd && npm install git+https://github.com/bernd/statsd-influxdb-backend.git
 
 # Install Grafana
 RUN wget https://grafanarel.s3.amazonaws.com/builds/grafana_${GRAFANA_VERSION}_amd64.deb && \
@@ -98,7 +97,9 @@ RUN apt-get clean\
 # Create volumes in order to persist data
 VOLUME /var/log
 VOLUME /var/lib/mysql
-VOLUME /var/opt/influxdb/data
+VOLUME /var/opt/influxdb
+VOLUME /opt/influxdb
+VOLUME /opt/statsd
 
 # Start Supervisor
 CMD ["/usr/bin/supervisord"]
