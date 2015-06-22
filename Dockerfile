@@ -97,7 +97,7 @@ ADD system/bashrc /root/.bashrc
 RUN apt-get clean\
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Create volumes in order to persist data
+# Create volumes
 VOLUME /var/log
 VOLUME /var/lib/mysql
 VOLUME /var/opt/influxdb
