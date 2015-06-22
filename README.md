@@ -8,8 +8,11 @@ Grafana:  2.0.2<br>
 
 ## Quick Start
 
+To start the container the first time you run it launch:
+
 ```sh
 docker run -d \
+  --name docker-statsd-influxdb \
   -p 3003:9000 \
   -p 3004:8083 \
   -p 8086:8086 \
@@ -17,6 +20,19 @@ docker run -d \
   -p 8125:8125/udp \
   samuelebistoletti/docker-statsd-influxdb
 ```
+
+To stop the container then launch:
+
+```sh
+docker stop docker-statsd-influxdb
+```
+
+To start the container again launch:
+
+```sh
+docker start docker-statsd-influxdb
+```
+
 ### Mapped Ports
 
 | Host  | Container | Service          |

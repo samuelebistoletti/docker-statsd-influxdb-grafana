@@ -95,5 +95,10 @@ ADD grafana/run.sh /usr/local/bin/run_grafana
 RUN apt-get clean\
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Create volumes in order to persist data
+VOLUME /var/log
+VOLUME /var/lib/mysql
+VOLUME /var/opt/influxdb/data
+
 # Start Supervisor
 CMD ["/usr/bin/supervisord"]
