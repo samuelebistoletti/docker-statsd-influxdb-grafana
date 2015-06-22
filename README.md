@@ -78,6 +78,7 @@ Now you are ready to add your first dashboard and launch some query on database.
 
 ## InfluxDB
 
+### Web Interface
 Admin interface: <http://localhost:3004>
 
 ```
@@ -85,3 +86,8 @@ Username: root
 Password: root  
 Port:     8086
 ```
+
+### InfluxDB Shell (CLI)
+
+1. Establish a ssh connection with the container
+2. Launch `influx` to open InfluxDB Shell (CLI)
