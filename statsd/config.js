@@ -109,7 +109,7 @@ Optional Variables:
   graphiteHost: '',
   graphitePort: '',
   port: 8125,
-  flushInterval: 1000,
+  flushInterval: 10000,
   backends: [ 'statsd-influxdb-backend' ],
 
   influxdb: {
