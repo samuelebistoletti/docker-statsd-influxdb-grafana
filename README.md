@@ -65,14 +65,14 @@ Password: root
 1. Open `Data Source` from left side menu, then click on `Add new`
 2. Choose a `name` for the source and flag it as `Default`
 3. Choose `InfluxDB 0.9.x` as `type`
-4. Fill remaining fields as follows:
+4. Fill remaining fields as follows and click on `Add` without altering other fields
+
 ```
 Url:		http://localhost:8086
 Database:	data
 User:		data
 Password:	data
 ```
-5. Click on `Add` without altering other fields
 
 Now you are ready to add your first dashboard and launch some query on database.
 
