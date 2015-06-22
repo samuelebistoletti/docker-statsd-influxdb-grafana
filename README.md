@@ -2,9 +2,11 @@
 
 ## Versions
 
-StatsD:   0.7.2<br>
-InfluxDB: 0.9.0<br>
-Grafana:  2.0.2<br>
+StatsD:   0.7.2
+
+InfluxDB: 0.9.0
+
+Grafana:  2.0.2
 
 ## Quick Start
 
@@ -35,14 +37,16 @@ docker start docker-statsd-influxdb-grafana
 
 ### Mapped Ports
 
-| Host  | Container | Service          |
-| ----- | --------- | ---------------- |
-|  3003 |      9000 | grafana          |
-|  8086 |      8086 | influxdb         |
-|  3004 |      8083 | influxdb-admin   |
-|  8125 |      8125 | statsd           |
-| 22022 |        22 | sshd             |
+```sh
 
+Host		Container		Service
+
+3003		9000			grafana
+8086		8086			influxdb
+3004		8083			influxdb-admin
+8125		8125			statsd
+22022		22				sshd
+```
 ### SSH
 
 ```sh
@@ -54,29 +58,29 @@ Password: root
 
 Admin interface: http://localhost:3003
 
-Username: root<br>
-Password: root<br>
+Username: root
+Password: root
 
 Add datasource and point it to:
 
 localhost:8082
 
-Database: data<br>
-Username: data<br>
-Password: data<br>
+Database: data
+Username: data
+Password: data
 
 ### Databases
 
-DB1: data<br>
-Username: data<br>
-Password: data<br>
+DB1: data
+Username: data
+Password: data
 
-DB2: grafana<br>
-Username: grafana<br>
-Password: grafana<br>
+DB2: grafana
+Username: grafana
+Password: grafana
 
-Admin interface: http://localhost:3004<br>
+Admin interface: http://localhost:3004
 
-Username: root<br>
-Password: root<br>
+Username: root
+Password: root
 Port:     8082
