@@ -4,7 +4,7 @@
 
 StatsD:   0.7.2  
 InfluxDB: 0.9.2  
-Grafana:  2.0.2  
+Grafana:  2.1.1  
 
 ## Quick Start
 
