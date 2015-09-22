@@ -3,7 +3,7 @@
 ## Versions
 
 StatsD:   0.7.2  
-InfluxDB: 0.9.3  
+InfluxDB: 0.9.4.1  
 Grafana:  2.1.3  
 
 ## Quick Start
