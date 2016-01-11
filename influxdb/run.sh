@@ -2,7 +2,7 @@
 
 set -m
 
-CONFIG_FILE="/etc/opt/influxdb/influxdb.conf"
+CONFIG_FILE="/etc/influxdb/influxdb.conf"
 
 echo "=> Starting InfluxDB ..."
-exec /opt/influxdb/influxd -config=${CONFIG_FILE}
+exec /usr/bin/influxd -config=${CONFIG_FILE}

@@ -3,14 +3,14 @@
 # Discussion, issues and change requests at:
 #   https://github.com/nodesource/distributions
 #
-# Script to install the NodeSource Node.js 0.12 repo onto a
+# Script to install the NodeSource Node.js 4.x LTS Argon repo onto a
 # Debian or Ubuntu system.
 #
-# Run as root or insert `sudo` before `bash`:
+# Run as root or insert `sudo -E` before `bash`:
 #
-# curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+# curl -sL https://deb.nodesource.com/setup_4.x | bash -
 #   or
-# wget -qO- https://deb.nodesource.com/setup_0.12 | bash -
+# wget -qO- https://deb.nodesource.com/setup_4.x | bash -
 #
 
 export DEBIAN_FRONTEND=noninteractive
@@ -36,7 +36,7 @@ exec_cmd() {
 }
 
 
-print_status "Installing the NodeSource Node.js 0.12 repo..."
+print_status "Installing the NodeSource Node.js 4.x LTS Argon repo..."
 
 
 PRE_INSTALL_PKGS=""
@@ -64,7 +64,7 @@ if [ "X${PRE_INSTALL_PKGS}" != "X" ]; then
     print_status "Installing packages required for setup:${PRE_INSTALL_PKGS}..."
     # This next command needs to be redirected to /dev/null or the script will bork
     # in some environments
-    exec_cmd "apt-get install -y${PRE_INSTALL_PKGS} 2>&1 > /dev/null"
+    exec_cmd "apt-get install -y${PRE_INSTALL_PKGS} > /dev/null 2>&1"
 fi
 
 DISTRO=$(lsb_release -c -s)
@@ -78,19 +78,24 @@ check_alt() {
     fi
 }
 
-check_alt "Linux Mint"    "rebecca"  "Ubuntu" "trusty"
-check_alt "Linux Mint"    "qiana"    "Ubuntu" "trusty"
+check_alt "Kali"          "sana"     "Debian" "jessie"
+check_alt "Debian"        "stretch"  "Debian" "jessie"
 check_alt "Linux Mint"    "maya"     "Ubuntu" "precise"
+check_alt "Linux Mint"    "qiana"    "Ubuntu" "trusty"
+check_alt "Linux Mint"    "rafaela"  "Ubuntu" "trusty"
+check_alt "Linux Mint"    "rebecca"  "Ubuntu" "trusty"
+check_alt "Linux Mint"    "rosa"     "Ubuntu" "trusty"
 check_alt "LMDE"          "betsy"    "Debian" "jessie"
 check_alt "elementaryOS"  "luna"     "Ubuntu" "precise"
 check_alt "elementaryOS"  "freya"    "Ubuntu" "trusty"
 check_alt "Trisquel"      "toutatis" "Ubuntu" "precise"
 check_alt "Trisquel"      "belenos"  "Ubuntu" "trusty"
+check_alt "BOSS"          "anokha"   "Debian" "wheezy"
 
 if [ "X${DISTRO}" == "Xdebian" ]; then
   print_status "Unknown Debian-based distribution, checking /etc/debian_version..."
-  NEWDISTRO=$([[ -e /etc/debian_version ]] && cat /etc/debian_version  | cut -d/ -f1)
-  if [ "X${DISTRO}" == "X" ]; then
+  NEWDISTRO=$([ -e /etc/debian_version ] && cut -d/ -f1 < /etc/debian_version)
+  if [ "X${NEWDISTRO}" == "X" ]; then
     print_status "Could not determine distribution from /etc/debian_version..."
   else
     DISTRO=$NEWDISTRO
@@ -101,10 +106,10 @@ fi
 print_status "Confirming \"${DISTRO}\" is supported..."
 
 if [ -x /usr/bin/curl ]; then
-    exec_cmd_nobail "curl -sLf -o /dev/null 'https://deb.nodesource.com/node_0.12/dists/${DISTRO}/Release'"
+    exec_cmd_nobail "curl -sLf -o /dev/null 'https://deb.nodesource.com/node_4.x/dists/${DISTRO}/Release'"
     RC=$?
 else
-    exec_cmd_nobail "wget -qO /dev/null -o /dev/null 'https://deb.nodesource.com/node_0.12/dists/${DISTRO}/Release'"
+    exec_cmd_nobail "wget -qO /dev/null -o /dev/null 'https://deb.nodesource.com/node_4.x/dists/${DISTRO}/Release'"
     RC=$?
 fi
 
@@ -116,7 +121,7 @@ fi
 if [ -f "/etc/apt/sources.list.d/chris-lea-node_js-$DISTRO.list" ]; then
     print_status 'Removing Launchpad PPA Repository for NodeJS...'
 
-    exec_cmd 'add-apt-repository -y -r ppa:chris-lea/node.js'
+    exec_cmd_nobail 'add-apt-repository -y -r ppa:chris-lea/node.js'
     exec_cmd "rm -f /etc/apt/sources.list.d/chris-lea-node_js-${DISTRO}.list"
 fi
 
@@ -128,13 +133,13 @@ else
     exec_cmd 'wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -'
 fi
 
-print_status 'Creating apt sources list file for the NodeSource Node.js 0.12 repo...'
+print_status 'Creating apt sources list file for the NodeSource Node.js 4.x LTS Argon repo...'
 
-exec_cmd "echo 'deb https://deb.nodesource.com/node_0.12 ${DISTRO} main' > /etc/apt/sources.list.d/nodesource.list"
-exec_cmd "echo 'deb-src https://deb.nodesource.com/node_0.12 ${DISTRO} main' >> /etc/apt/sources.list.d/nodesource.list"
+exec_cmd "echo 'deb https://deb.nodesource.com/node_4.x ${DISTRO} main' > /etc/apt/sources.list.d/nodesource.list"
+exec_cmd "echo 'deb-src https://deb.nodesource.com/node_4.x ${DISTRO} main' >> /etc/apt/sources.list.d/nodesource.list"
 
 print_status 'Running `apt-get update` for you...'
 
 exec_cmd 'apt-get update'
 
-print_status 'Run `apt-get install nodejs` (as root) to install Node.js 0.12 and npm'
+print_status 'Run `apt-get install nodejs` (as root) to install Node.js 4.x LTS Argon and npm'

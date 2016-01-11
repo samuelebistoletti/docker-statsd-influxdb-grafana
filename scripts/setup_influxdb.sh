@@ -2,7 +2,7 @@
 
 set -m
 
-CONFIG_FILE="/etc/opt/influxdb/influxdb.conf"
+CONFIG_FILE="/etc/influxdb/influxdb.conf"
 
 API_URL="http://localhost:8086"
 
@@ -11,7 +11,7 @@ if [ -f "/.influxdb_configured" ]; then
     echo "=> Database had been created before, skipping ..."
 else
     echo "=> Starting InfluxDB ..."
-    exec /opt/influxdb/influxd -config=${CONFIG_FILE} &
+    exec /usr/bin/influxd -config=${CONFIG_FILE} &
     arr=$(echo ${PRE_CREATE_DB} | tr ";" "\n")
 
     #wait for the startup of influxdb

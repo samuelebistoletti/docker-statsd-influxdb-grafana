@@ -3,8 +3,8 @@ MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
 
 # Default versions
 ENV STATSD_VERSION 0.7.2
-ENV INFLUXDB_VERSION 0.9.4.1
-ENV GRAFANA_VERSION 2.1.3
+ENV INFLUXDB_VERSION 0.9.6.1
+ENV GRAFANA_VERSION 2.6.0
 
 # Database Defaults
 ENV PRE_CREATE_DB data
@@ -67,7 +67,7 @@ RUN wget http://s3.amazonaws.com/influxdb/influxdb_${INFLUXDB_VERSION}_amd64.deb
 	dpkg -i influxdb_${INFLUXDB_VERSION}_amd64.deb && rm influxdb_${INFLUXDB_VERSION}_amd64.deb
 
 # Configure InfluxDB
-ADD influxdb/influxdb.conf /etc/opt/influxdb/influxdb.conf
+ADD influxdb/influxdb.conf /etc/influxdb/influxdb.conf
 ADD influxdb/run.sh /usr/local/bin/run_influxdb
 ADD scripts/setup_influxdb.sh /tmp/setup_influxdb.sh
 RUN /tmp/setup_influxdb.sh
