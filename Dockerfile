@@ -3,7 +3,7 @@ MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
 
 # Default versions
 ENV STATSD_VERSION 0.7.2
-ENV INFLUXDB_VERSION 0.9.6.1
+ENV INFLUXDB_VERSION 0.10.1-1
 ENV GRAFANA_VERSION 2.6.0
 
 # Database Defaults
