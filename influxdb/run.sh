@@ -1,8 +1,6 @@
-#!/bin/bash
-
-set -m
-
-CONFIG_FILE="/etc/influxdb/influxdb.conf"
+#!/bin/sh
 
 echo "=> Starting InfluxDB ..."
-exec /usr/bin/influxd -config=${CONFIG_FILE}
+exec /etc/init.d/influxdb start
+
+exit 0

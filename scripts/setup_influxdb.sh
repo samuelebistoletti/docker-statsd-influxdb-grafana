@@ -2,19 +2,17 @@
 
 set -m
 
-CONFIG_FILE="/etc/influxdb/influxdb.conf"
-
 API_URL="http://localhost:8086"
 
-echo "=> About to create the following database: ${PRE_CREATE_DB}"
+echo "=> About to create the following database: ${INFLUXDB_GRAFANA_DB}"
 if [ -f "/.influxdb_configured" ]; then
     echo "=> Database had been created before, skipping ..."
 else
     echo "=> Starting InfluxDB ..."
-    exec /usr/bin/influxd -config=${CONFIG_FILE} &
-    arr=$(echo ${PRE_CREATE_DB} | tr ";" "\n")
+    /etc/init.d/influxdb start
 
-    #wait for the startup of influxdb
+    arr=$(echo ${INFLUXDB_GRAFANA_DB} | tr ";" "\n")
+
     RET=1
     while [[ RET -ne 0 ]]; do
         echo "=> Waiting for confirmation of InfluxDB service startup ..."
@@ -22,21 +20,27 @@ else
         curl -k ${API_URL}/ping 2> /dev/null
         RET=$?
     done
+
     echo ""
+    echo "=> Creating user for Grafana"
+    curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=CREATE USER ${INFLUXDB_GRAFANA_USER} WITH PASSWORD '${INFLUXDB_GRAFANA_PW}'"
 
     for x in $arr
     do
         echo "=> Creating database: ${x}"
-	curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=CREATE DATABASE ${x}"
-    done
-    echo ""
+        curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=CREATE DATABASE ${x}"
 
-    echo "=> Creating User for database: data"
-    curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=CREATE USER ${INFLUXDB_DATA_USER} WITH PASSWORD '${INFLUXDB_DATA_PW}'"
-    curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=GRANT ALL ON data TO ${INFLUXDB_DATA_USER}"
-    echo ""
+        echo ""
+        echo "=> Granting permission on database for Grafana user"
+        curl -G $(echo ${API_URL}'/query') --data-urlencode "u=root" --data-urlencode "p=root" --data-urlencode "q=GRANT ALL ON ${x} TO ${INFLUXDB_GRAFANA_USER}"
+        echo ""
+    done
 
     touch "/.influxdb_configured"
+
+    echo "=> Stopping InfluxDB ..."
+    /etc/init.d/influxdb stop
+
     exit 0
 fi
 

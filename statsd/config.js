@@ -117,9 +117,9 @@ Optional Variables:
     port: 8086,          // InfluxDB port. (default 8086)
     version: 0.9,        // InfluxDB version. (default 0.8)
     ssl: false,          // InfluxDB is hosted over SSL. (default false)
-    database: 'data',    // InfluxDB database instance. (required)
-    username: 'data',    // InfluxDB database username.
-    password: 'data',    // InfluxDB database password.
+    database: 'datasource', // InfluxDB database instance. (required)
+    username: 'datasource', // InfluxDB database username.
+    password: 'datasource', // InfluxDB database password.
     flush: {
       enable: true       // Enable regular flush strategy. (default true)
     },

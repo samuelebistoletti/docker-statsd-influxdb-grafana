@@ -1,6 +1,6 @@
-#!/bin/bash
-
-set -m
+#!/bin/sh
 
 echo "=> Starting StatsD ..."
-bash -c 'sleep 10 && /usr/bin/nodejs /opt/statsd/stats.js /opt/statsd/config.js 2>&1 >> /var/log/statsd.log'
+bash -c "cd /opt/statsd && /usr/bin/nodejs stats.js config.js 1>/var/log/statsd.log 2>&1 & echo \$! > /var/run/statsd.pid"
+
+exit 0

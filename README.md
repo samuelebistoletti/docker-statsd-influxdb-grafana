@@ -69,9 +69,9 @@ Password: root
 
 ```
 Url:		http://localhost:8086
-Database:	data
-User:		data
-Password:	data
+Database:	datasource
+User:		  datasource
+Password:	datasource
 ```
 
 Now you are ready to add your first dashboard and launch some query on database.

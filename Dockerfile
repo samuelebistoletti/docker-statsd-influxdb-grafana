@@ -1,15 +1,17 @@
-FROM debian:latest
+FROM phusion/baseimage:0.9.18
 MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
+
+CMD ["/sbin/my_init"]
 
 # Default versions
 ENV STATSD_VERSION 0.7.2
-ENV INFLUXDB_VERSION 0.10.1-1
+ENV INFLUXDB_VERSION 0.9.6.1
 ENV GRAFANA_VERSION 2.6.0
 
 # Database Defaults
-ENV PRE_CREATE_DB data
-ENV INFLUXDB_DATA_USER data
-ENV INFLUXDB_DATA_PW data
+ENV INFLUXDB_GRAFANA_DB datasource
+ENV INFLUXDB_GRAFANA_USER datasource
+ENV INFLUXDB_GRAFANA_PW datasource
 ENV MYSQL_GRAFANA_USER grafana
 ENV MYSQL_GRAFANA_PW grafana
 
@@ -19,41 +21,32 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update system repositories
 RUN apt-get -y update
 
-# Install apt-utils
-RUN apt-get -y --force-yes install apt-utils
-
 # Upgrade system
 RUN apt-get -y dist-upgrade
 
 # Base dependencies
 RUN apt-get -y --force-yes install\
- adduser\
  curl\
+ wget\
  git\
  htop\
  libfontconfig\
  mysql-client\
  mysql-server\
- net-tools\
- openssh-server\
- sudo\
- supervisor\
- vim\
- wget
-
-# Set root password and configure SSH Daemon
-RUN echo 'root:root' | chpasswd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# Configure Supervisord
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN mkdir -p /var/log/supervisor
+ net-tools
 
 # Create support directories
-RUN mkdir -p /var/run/sshd
+RUN mkdir -p /etc/my_init.d
+
+# Set root password and configure SSH
+RUN echo 'root:root' | chpasswd
+
+RUN rm -f /etc/service/sshd/down
+RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # Configure MySql
-ADD mysql/run.sh /usr/local/bin/run_mysql
+ADD mysql/run.sh /etc/my_init.d/01_run_mysql.sh
 ADD scripts/setup_mysql.sh /tmp/setup_mysql.sh
 RUN /tmp/setup_mysql.sh
 
@@ -68,7 +61,8 @@ RUN wget http://s3.amazonaws.com/influxdb/influxdb_${INFLUXDB_VERSION}_amd64.deb
 
 # Configure InfluxDB
 ADD influxdb/influxdb.conf /etc/influxdb/influxdb.conf
-ADD influxdb/run.sh /usr/local/bin/run_influxdb
+ADD influxdb/run.sh /etc/my_init.d/02_run_influxdb.sh
+ADD influxdb/init.sh /etc/init.d/influxdb
 ADD scripts/setup_influxdb.sh /tmp/setup_influxdb.sh
 RUN /tmp/setup_influxdb.sh
 
@@ -77,7 +71,7 @@ RUN git clone -b v${STATSD_VERSION} https://github.com/etsy/statsd.git /opt/stat
 
 # Configure StatsD
 ADD statsd/config.js /opt/statsd/config.js
-ADD statsd/run.sh /usr/local/bin/run_statsd
+ADD statsd/run.sh /etc/my_init.d/03_run_statsd.sh
 
 # Install StatsD InfluxDb Backend
 RUN cd /opt/statsd && npm install git+https://github.com/bernd/statsd-influxdb-backend.git
@@ -88,7 +82,7 @@ RUN wget https://grafanarel.s3.amazonaws.com/builds/grafana_${GRAFANA_VERSION}_a
 
 # Configure Grafana
 ADD grafana/grafana.ini /etc/grafana/grafana.ini
-ADD grafana/run.sh /usr/local/bin/run_grafana
+ADD grafana/run.sh /etc/my_init.d/04_run_grafana.sh
 
 # Copy .bashrc
 ADD system/bashrc /root/.bashrc
@@ -104,6 +98,3 @@ VOLUME /var/opt/influxdb
 VOLUME /opt/influxdb
 VOLUME /opt/statsd
 VOLUME /root
-
-# Start Supervisor
-CMD ["/usr/bin/supervisord"]

@@ -1,6 +1,6 @@
-#!/bin/bash
-
-set -m
+#!/bin/sh
 
 echo "=> Starting MySQL ..."
-exec /usr/sbin/mysqld
+exec /etc/init.d/mysql start
+
+exit 0

@@ -1,6 +1,6 @@
-#!/bin/bash
-
-set -m
+#!/bin/sh
 
 echo "=> Starting Grafana ..."
 exec /etc/init.d/grafana-server start
+
+exit 0
