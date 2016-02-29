@@ -70,7 +70,7 @@ Password: root
 ```
 Url:		http://localhost:8086
 Database:	datasource
-User:		  datasource
+User:     datasource
 Password:	datasource
 ```
 
