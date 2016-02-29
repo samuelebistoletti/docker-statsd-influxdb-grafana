@@ -68,9 +68,9 @@ Password: root
 4. Fill remaining fields as follows and click on `Add` without altering other fields
 
 ```
-Url:		  http://localhost:8086
+Url: http://localhost:8086
 Database:	datasource
-User:     datasource
+User: datasource
 Password:	datasource
 ```
 
@@ -85,7 +85,7 @@ Open <http://localhost:3004>
 ```
 Username: root  
 Password: root  
-Port:     8086
+Port: 8086
 ```
 
 ### InfluxDB Shell (CLI)
