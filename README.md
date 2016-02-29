@@ -3,7 +3,7 @@
 ## Versions
 
 StatsD:   0.7.2  
-InfluxDB: 0.10.1-1  
+InfluxDB: 0.9.6.1  
 Grafana:  2.6.0  
 
 ## Quick Start
@@ -68,7 +68,7 @@ Password: root
 4. Fill remaining fields as follows and click on `Add` without altering other fields
 
 ```
-Url:		http://localhost:8086
+Url:		  http://localhost:8086
 Database:	datasource
 User:     datasource
 Password:	datasource
