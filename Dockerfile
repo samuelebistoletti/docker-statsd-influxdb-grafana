@@ -4,9 +4,9 @@ MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
 CMD ["/sbin/my_init"]
 
 # Default versions
-ENV STATSD_VERSION 0.7.2
-ENV INFLUXDB_VERSION 0.9.6.1
-ENV GRAFANA_VERSION 2.6.0
+ENV STATSD_VERSION 0.8.0
+ENV INFLUXDB_VERSION 0.13.0
+ENV GRAFANA_VERSION 3.0.4-1464167696
 
 # Database Defaults
 ENV INFLUXDB_GRAFANA_DB datasource
@@ -56,7 +56,7 @@ RUN /tmp/setup_nodejs.sh
 RUN apt-get -y --force-yes install nodejs
 
 # Install InfluxDB
-RUN wget http://s3.amazonaws.com/influxdb/influxdb_${INFLUXDB_VERSION}_amd64.deb && \
+RUN wget https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERSION}_amd64.deb && \
 	dpkg -i influxdb_${INFLUXDB_VERSION}_amd64.deb && rm influxdb_${INFLUXDB_VERSION}_amd64.deb
 
 # Configure InfluxDB
@@ -74,7 +74,7 @@ ADD statsd/config.js /opt/statsd/config.js
 ADD statsd/run.sh /etc/my_init.d/03_run_statsd.sh
 
 # Install StatsD InfluxDb Backend
-RUN cd /opt/statsd && npm install git+https://github.com/bernd/statsd-influxdb-backend.git
+RUN cd /opt/statsd && npm install git+https://github.com/gillesdemey/statsd-influxdb-backend.git
 
 # Install Grafana
 RUN wget https://grafanarel.s3.amazonaws.com/builds/grafana_${GRAFANA_VERSION}_amd64.deb && \
@@ -94,7 +94,6 @@ RUN apt-get clean\
 # Create volumes
 VOLUME /var/log
 VOLUME /var/lib/mysql
-VOLUME /var/opt/influxdb
-VOLUME /opt/influxdb
+VOLUME /var/lib/influxdb
 VOLUME /opt/statsd
 VOLUME /root

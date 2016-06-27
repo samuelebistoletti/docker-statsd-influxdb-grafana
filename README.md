@@ -2,9 +2,9 @@
 
 ## Versions
 
-StatsD:   0.7.2  
-InfluxDB: 0.9.6.1  
-Grafana:  2.6.0  
+StatsD:   0.8.0
+InfluxDB: 0.13
+Grafana:  3.0.4
 
 ## Quick Start
 
@@ -62,10 +62,11 @@ Password: root
 
 ### Add data source on Grafana
 
-1. Open `Data Source` from left side menu, then click on `Add new`
+1. Open `Data Sources` from left side menu, then click on `Add data source`
 2. Choose a `name` for the source and flag it as `Default`
-3. Choose `InfluxDB 0.9.x` as `type`
-4. Fill remaining fields as follows and click on `Add` without altering other fields
+3. Choose `InfluxDB` as `type`
+4. Choose `direct` as `access`
+5. Fill remaining fields as follows and click on `Add` without altering other fields
 
 ```
 Url: http://localhost:8086
@@ -83,8 +84,8 @@ Now you are ready to add your first dashboard and launch some query on database.
 Open <http://localhost:3004>
 
 ```
-Username: root  
-Password: root  
+Username: root
+Password: root
 Port: 8086
 ```
 
