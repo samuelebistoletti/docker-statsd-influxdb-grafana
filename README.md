@@ -18,8 +18,10 @@ docker run -d \
   -p 8086:8086 \
   -p 22022:22 \
   -p 8125:8125/udp \
-  samuelebistoletti/docker-statsd-influxdb-grafana
+  samuelebistoletti/docker-statsd-influxdb-grafana:latest
 ```
+
+You can replace `latest` with the desired version listed in changelog file.
 
 To stop the container launch:
 
