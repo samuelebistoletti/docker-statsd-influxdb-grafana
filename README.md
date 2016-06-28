@@ -1,5 +1,9 @@
 # Docker Image with StatsD, InfluxDB and Grafana
 
+:facepunch: Battle-tested
+
+[![CircleCI](https://circleci.com/gh/samuelebistoletti/docker-statsd-influxdb-grafana.svg?style=svg)](https://circleci.com/gh/samuelebistoletti/docker-statsd-influxdb-grafana)
+
 ## Versions
 
 * StatsD:   0.8.0
