@@ -18,6 +18,12 @@ ENV MYSQL_GRAFANA_PW grafana
 # Environment variables
 ENV DEBIAN_FRONTEND noninteractive
 
+# Fix bad proxy issue
+ADD system/99fixbadproxy /etc/apt/apt.conf.d/99fixbadproxy
+
+# Clear previous sources
+RUN rm /var/lib/apt/lists/* -vf
+
 # Update system repositories
 RUN apt-get -y update
 
