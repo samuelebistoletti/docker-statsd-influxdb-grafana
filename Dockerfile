@@ -1,12 +1,12 @@
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage:0.9.19
 MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
 
 CMD ["/sbin/my_init"]
 
 # Default versions
 ENV STATSD_VERSION 0.8.0
-ENV INFLUXDB_VERSION 0.13.0
-ENV GRAFANA_VERSION 3.0.4-1464167696
+ENV INFLUXDB_VERSION 1.0.0
+ENV GRAFANA_VERSION 3.1.1-1470047149
 
 # Database Defaults
 ENV INFLUXDB_GRAFANA_DB datasource
@@ -80,7 +80,7 @@ ADD statsd/config.js /opt/statsd/config.js
 ADD statsd/run.sh /etc/my_init.d/03_run_statsd.sh
 
 # Install StatsD InfluxDb Backend
-RUN cd /opt/statsd && npm install git+https://github.com/gillesdemey/statsd-influxdb-backend.git
+RUN cd /opt/statsd && npm install git+https://github.com/vdmytriv/statsd-influxdb-backend.git
 
 # Install Grafana
 RUN wget https://grafanarel.s3.amazonaws.com/builds/grafana_${GRAFANA_VERSION}_amd64.deb && \
