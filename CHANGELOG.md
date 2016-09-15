@@ -1,6 +1,10 @@
 Docker StatsD InfluxDB Grafana image
 -----------------------------------
 
+## v1.0.2 (2016-09-15)
+
+* Fix for bad proxy hash sum mismatch
+
 ## v1.0.1 (2016-06-27)
 
 * Upgraded StatsD to version 0.8.0
