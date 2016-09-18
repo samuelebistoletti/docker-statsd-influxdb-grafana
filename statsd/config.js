@@ -115,7 +115,7 @@ Optional Variables:
   influxdb: {
     host: '127.0.0.1',   // InfluxDB host. (default 127.0.0.1)
     port: 8086,          // InfluxDB port. (default 8086)
-    version: 0.13,       // InfluxDB version. (default 0.8)
+    version: 1.0,        // InfluxDB version. (default 0.8)
     ssl: false,          // InfluxDB is hosted over SSL. (default false)
     database: 'datasource', // InfluxDB database instance. (required)
     username: 'datasource', // InfluxDB database username.
