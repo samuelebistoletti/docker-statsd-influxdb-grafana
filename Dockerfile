@@ -39,7 +39,8 @@ RUN apt-get -y --force-yes install\
  libfontconfig\
  mysql-client\
  mysql-server\
- net-tools
+ net-tools\
+ netcat
 
 # Create support directories
 RUN mkdir -p /etc/my_init.d
@@ -87,6 +88,8 @@ RUN wget https://grafanarel.s3.amazonaws.com/builds/grafana_${GRAFANA_VERSION}_a
 	dpkg -i grafana_${GRAFANA_VERSION}_amd64.deb && rm grafana_${GRAFANA_VERSION}_amd64.deb
 
 # Configure Grafana
+ADD scripts/setup_grafana.sh /tmp/setup_grafana.sh
+RUN /tmp/setup_grafana.sh
 ADD grafana/grafana.ini /etc/grafana/grafana.ini
 ADD grafana/run.sh /etc/my_init.d/04_run_grafana.sh
 
@@ -96,6 +99,9 @@ ADD system/bashrc /root/.bashrc
 # Cleanup
 RUN apt-get clean\
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ # Add dashboards
+ADD grafana/*.json /var/lib/grafana/dashboards/
 
 # Create volumes
 VOLUME /var/log
