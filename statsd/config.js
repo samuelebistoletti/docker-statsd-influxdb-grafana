@@ -120,6 +120,7 @@ Optional Variables:
     database: 'datasource', // InfluxDB database instance. (required)
     username: 'datasource', // InfluxDB database username.
     password: 'datasource', // InfluxDB database password.
+    retentionPolicy: 'default',    // InfluxDB database Retention policy.
     flush: {
       enable: true       // Enable regular flush strategy. (default true)
     },
