@@ -1,6 +1,16 @@
 Docker StatsD InfluxDB Grafana image
 -----------------------------------
 
+## v2.0.0 (2017-01-28)
+
+* Ubuntu 16.04 LTS is the new Docker base image
+* New init system with Supervisord
+* StatsD InfluxDB backend connector removed
+* StatsD Etsy removed
+* StatsD has been fully replaced with InfluxData Telegraf, that supports StatsD protocol
+* Upgraded InfluxDB to version 1.2
+* Upgraded Grafana to version 4.1.1
+
 ## v1.0.2 (2016-09-15)
 
 * Fix for bad proxy hash sum mismatch

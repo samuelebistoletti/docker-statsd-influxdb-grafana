@@ -1,105 +1,100 @@
-FROM phusion/baseimage:0.9.18
+FROM ubuntu:16.04
 MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
 
-CMD ["/sbin/my_init"]
+ENV DEBIAN_FRONTEND noninteractive
+ENV LANG C.UTF-8
 
 # Default versions
-ENV STATSD_VERSION 0.8.0
-ENV INFLUXDB_VERSION 0.13.0
-ENV GRAFANA_VERSION 3.0.4-1464167696
+ENV TELEGRAF_VERSION 1.2.0
+ENV INFLUXDB_VERSION 1.2.0
+ENV GRAFANA_VERSION  4.1.1-1484211277
 
 # Database Defaults
 ENV INFLUXDB_GRAFANA_DB datasource
 ENV INFLUXDB_GRAFANA_USER datasource
 ENV INFLUXDB_GRAFANA_PW datasource
+
 ENV MYSQL_GRAFANA_USER grafana
 ENV MYSQL_GRAFANA_PW grafana
 
-# Environment variables
-ENV DEBIAN_FRONTEND noninteractive
-
 # Fix bad proxy issue
-ADD system/99fixbadproxy /etc/apt/apt.conf.d/99fixbadproxy
+COPY system/99fixbadproxy /etc/apt/apt.conf.d/99fixbadproxy
 
 # Clear previous sources
 RUN rm /var/lib/apt/lists/* -vf
 
-# Update system repositories
-RUN apt-get -y update
-
-# Upgrade system
-RUN apt-get -y dist-upgrade
-
 # Base dependencies
-RUN apt-get -y --force-yes install\
- curl\
- wget\
- git\
- htop\
- libfontconfig\
- mysql-client\
- mysql-server\
- net-tools
+RUN apt-get -y update && \
+ apt-get -y dist-upgrade && \
+ apt-get -y --force-yes install \
+  apt-utils \
+  ca-certificates \
+  curl \
+  git \
+  htop \
+  libfontconfig \
+  mysql-client \
+  mysql-server \
+  nano \
+  net-tools \
+  openssh-server \
+  supervisor \
+  wget && \
+ curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
+ apt-get install -y nodejs
 
-# Create support directories
-RUN mkdir -p /etc/my_init.d
+# Configure Supervisord, SSH and base env
+COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Set root password and configure SSH
-RUN echo 'root:root' | chpasswd
+WORKDIR /root
 
-RUN rm -f /etc/service/sshd/down
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN mkdir -p /var/log/supervisor && \
+    mkdir -p /var/run/sshd && \
+    sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    echo 'root:root' | chpasswd && \
+    rm -rf .ssh && \
+    rm -rf .profile && \
+    mkdir .ssh
+
+COPY ssh/id_rsa .ssh/id_rsa
+COPY bash/profile .profile
 
 # Configure MySql
-ADD mysql/run.sh /etc/my_init.d/01_run_mysql.sh
-ADD scripts/setup_mysql.sh /tmp/setup_mysql.sh
-RUN /tmp/setup_mysql.sh
+COPY scripts/setup_mysql.sh /tmp/setup_mysql.sh
 
-# Add Nodejs repository and install it
-ADD scripts/setup_nodejs.sh /tmp/setup_nodejs.sh
-RUN /tmp/setup_nodejs.sh
-RUN apt-get -y --force-yes install nodejs
+RUN /tmp/setup_mysql.sh
 
 # Install InfluxDB
 RUN wget https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERSION}_amd64.deb && \
 	dpkg -i influxdb_${INFLUXDB_VERSION}_amd64.deb && rm influxdb_${INFLUXDB_VERSION}_amd64.deb
 
 # Configure InfluxDB
-ADD influxdb/influxdb.conf /etc/influxdb/influxdb.conf
-ADD influxdb/run.sh /etc/my_init.d/02_run_influxdb.sh
-ADD influxdb/init.sh /etc/init.d/influxdb
-ADD scripts/setup_influxdb.sh /tmp/setup_influxdb.sh
-RUN /tmp/setup_influxdb.sh
+COPY influxdb/influxdb.conf /etc/influxdb/influxdb.conf
+COPY influxdb/init.sh /etc/init.d/influxdb
 
-# Install StatsD
-RUN git clone -b v${STATSD_VERSION} https://github.com/etsy/statsd.git /opt/statsd
+# Install Telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf_${TELEGRAF_VERSION}_amd64.deb && \
+	dpkg -i telegraf_${TELEGRAF_VERSION}_amd64.deb && rm telegraf_${TELEGRAF_VERSION}_amd64.deb
 
-# Configure StatsD
-ADD statsd/config.js /opt/statsd/config.js
-ADD statsd/run.sh /etc/my_init.d/03_run_statsd.sh
-
-# Install StatsD InfluxDb Backend
-RUN cd /opt/statsd && npm install git+https://github.com/gillesdemey/statsd-influxdb-backend.git
+# Configure Telegraf
+COPY telegraf/telegraf.conf /etc/telegraf/telegraf.conf
+COPY telegraf/init.sh /etc/init.d/telegraf
 
 # Install Grafana
 RUN wget https://grafanarel.s3.amazonaws.com/builds/grafana_${GRAFANA_VERSION}_amd64.deb && \
 	dpkg -i grafana_${GRAFANA_VERSION}_amd64.deb && rm grafana_${GRAFANA_VERSION}_amd64.deb
 
 # Configure Grafana
-ADD grafana/grafana.ini /etc/grafana/grafana.ini
-ADD grafana/run.sh /etc/my_init.d/04_run_grafana.sh
-
-# Copy .bashrc
-ADD system/bashrc /root/.bashrc
+COPY grafana/grafana.ini /etc/grafana/grafana.ini
 
 # Cleanup
-RUN apt-get clean\
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get clean && \
+ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Create volumes
 VOLUME /var/log
 VOLUME /var/lib/mysql
 VOLUME /var/lib/influxdb
-VOLUME /opt/statsd
 VOLUME /root
+
+CMD ["/usr/bin/supervisord"]
