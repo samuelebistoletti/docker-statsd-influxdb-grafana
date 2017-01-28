@@ -91,10 +91,4 @@ COPY grafana/grafana.ini /etc/grafana/grafana.ini
 RUN apt-get clean && \
  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Create volumes
-VOLUME /var/log
-VOLUME /var/lib/mysql
-VOLUME /var/lib/influxdb
-VOLUME /root
-
 CMD ["/usr/bin/supervisord"]
