@@ -1,4 +1,4 @@
-# Docker Image with StatsD, InfluxDB and Grafana
+# Docker Image with Telegraf (StatsD), InfluxDB and Grafana
 
 :facepunch: Battle-tested
 
@@ -6,9 +6,10 @@
 
 ## Versions
 
-* StatsD:   0.8.0
-* InfluxDB: 0.13
-* Grafana:  3.0.4
+* Ubuntu:            16.04
+* InfluxDB:          1.2
+* Telegraf (StatsD): 1.2
+* Grafana:           4.1.1
 
 ## Quick Start
 
@@ -17,7 +18,7 @@ To start the container the first time launch:
 ```sh
 docker run -d \
   --name docker-statsd-influxdb-grafana \
-  -p 3003:9000 \
+  -p 3003:3003 \
   -p 3004:8083 \
   -p 8086:8086 \
   -p 22022:22 \
@@ -44,9 +45,9 @@ docker start docker-statsd-influxdb-grafana
 ```
 Host		Container		Service
 
-3003		9000			grafana
-8086		8086			influxdb
+3003		3003			grafana
 3004		8083			influxdb-admin
+8086		8086			influxdb
 8125		8125			statsd
 22022		22				sshd
 ```
@@ -68,7 +69,7 @@ Password: root
 
 ### Add data source on Grafana
 
-1. Open `Data Sources` from left side menu, then click on `Add data source`
+1. Using the wizard click on `Add data source`
 2. Choose a `name` for the source and flag it as `Default`
 3. Choose `InfluxDB` as `type`
 4. Choose `direct` as `access`
@@ -76,10 +77,12 @@ Password: root
 
 ```
 Url: http://localhost:8086
-Database:	datasource
-User: datasource
-Password:	datasource
+Database:	telegraf
+User: telegraf
+Password:	telegraf
 ```
+
+Basic auth and credentials must be left unflagged. Proxy is not required.
 
 Now you are ready to add your first dashboard and launch some query on database.
 
