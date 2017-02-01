@@ -3,6 +3,8 @@ Docker StatsD InfluxDB Grafana image
 
 ## v2.0.0 (2017-01-28)
 
+### Warning: upgrade from version 1.0.x is not supported, all persisted data in volumes will be lost if you delete the container.
+
 * Ubuntu 16.04 LTS is the new Docker base image
 * New init system with Supervisord
 * StatsD InfluxDB backend connector removed
