@@ -109,12 +109,14 @@ function start() {
         fi
     fi
 
-    # Bump the file limits, before launching the daemon. These will
+    # Bump the file limits, if required, before launching the daemon. These will
     # carry over to launched processes.
-    ulimit -n $OPEN_FILE_LIMIT
-    if [ $? -ne 0 ]; then
-        log_failure_msg "Unable to set ulimit to $OPEN_FILE_LIMIT"
-        exit 1
+    if [ `ulimit -n` -lt $OPEN_FILE_LIMIT ]; then
+        ulimit -n $OPEN_FILE_LIMIT
+        if [ $? -ne 0 ]; then
+            log_failure_msg "Unable to set ulimit to $OPEN_FILE_LIMIT"
+            exit 1
+        fi
     fi
 
     # Launch process
