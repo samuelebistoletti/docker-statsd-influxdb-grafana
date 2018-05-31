@@ -19,7 +19,8 @@
 To start the container the first time launch:
 
 ```sh
-docker run -d \
+docker run --ulimit nofile=66000:66000 \
+  -d \
   --name docker-statsd-influxdb-grafana \
   -p 3003:3003 \
   -p 3004:8083 \
