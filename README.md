@@ -23,7 +23,7 @@ docker run --ulimit nofile=66000:66000 \
   -d \
   --name docker-statsd-influxdb-grafana \
   -p 3003:3003 \
-  -p 3004:8083 \
+  -p 3004:8888 \
   -p 8086:8086 \
   -p 22022:22 \
   -p 8125:8125/udp \
@@ -50,7 +50,7 @@ docker start docker-statsd-influxdb-grafana
 Host		Container		Service
 
 3003		3003			grafana
-3004		8083			influxdb-admin
+3004		8888			influxdb-admin (chronograf)
 8086		8086			influxdb
 8125		8125			statsd
 22022		22				sshd
