@@ -1,6 +1,11 @@
 Docker StatsD InfluxDB Grafana image
 -----------------------------------
 
+## v2.1.0 (2018-06-11)
+
+* Upgraded Grafana 5.1
+* Installed Chronograf 1.5
+
 ## v2.0.0 (2017-01-28)
 
 ### Warning: upgrade from version 1.0.x is not supported, all persisted data in volumes will be lost if you delete the container.

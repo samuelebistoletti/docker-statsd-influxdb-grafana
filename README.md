@@ -53,7 +53,7 @@ Host		Container		Service
 3004		8888			influxdb-admin (chronograf)
 8086		8086			influxdb
 8125		8125			statsd
-22022		22				sshd
+22022		22        sshd
 ```
 ## SSH
 
