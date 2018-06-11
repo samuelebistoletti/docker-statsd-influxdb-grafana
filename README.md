@@ -8,7 +8,7 @@
 
 ### Warning, breaking change: upgrade from version 1.0.x of this image is not supported, all persisted data in volumes will be lost if you delete the container.
 
-* Docker Image:      2.0.0
+* Docker Image:      2.1.0
 * Ubuntu:            16.04
 * InfluxDB:          1.2
 * Telegraf (StatsD): 1.2
