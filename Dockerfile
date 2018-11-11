@@ -27,7 +27,7 @@ RUN rm /var/lib/apt/lists/* -vf
 # Base dependencies
 RUN apt-get -y update && \
  apt-get -y dist-upgrade && \
- apt-get -y --allow install \
+ apt-get -y --force-yes install \
   apt-utils \
   ca-certificates \
   curl \
