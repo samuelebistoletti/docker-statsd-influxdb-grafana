@@ -10,9 +10,9 @@
 
 * Docker Image:      2.1.0
 * Ubuntu:            16.04
-* InfluxDB:          1.2
-* Telegraf (StatsD): 1.2
-* Grafana:           4.1.1
+* InfluxDB:          1.7.0
+* Telegraf (StatsD): 1.8.3-1
+* Grafana:           5.3.2
 
 ## Quick Start
 

@@ -5,10 +5,10 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 
 # Default versions
-ENV TELEGRAF_VERSION 1.6.2-1
-ENV INFLUXDB_VERSION 1.5.2
-ENV GRAFANA_VERSION  5.1.2
-ENV CHRONOGRAF_VERSION 1.5.0.1
+ENV TELEGRAF_VERSION 1.8.3-1
+ENV INFLUXDB_VERSION 1.7.0
+ENV GRAFANA_VERSION  5.3.2
+ENV CHRONOGRAF_VERSION 1.7.2
 
 # Database Defaults
 ENV INFLUXDB_GRAFANA_DB datasource
@@ -27,7 +27,7 @@ RUN rm /var/lib/apt/lists/* -vf
 # Base dependencies
 RUN apt-get -y update && \
  apt-get -y dist-upgrade && \
- apt-get -y --force-yes install \
+ apt-get -y --allow install \
   apt-utils \
   ca-certificates \
   curl \
@@ -41,7 +41,7 @@ RUN apt-get -y update && \
   openssh-server \
   supervisor \
   wget && \
- curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
+ curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
  apt-get install -y nodejs
 
 # Configure Supervisord, SSH and base env
@@ -89,7 +89,9 @@ RUN wget https://dl.influxdata.com/chronograf/releases/chronograf_${CHRONOGRAF_V
 RUN wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_${GRAFANA_VERSION}_amd64.deb && \
 	dpkg -i grafana_${GRAFANA_VERSION}_amd64.deb && rm grafana_${GRAFANA_VERSION}_amd64.deb
 
-# Configure Grafana
+# Configure Grafana with provisioning
+ADD grafana/provisioning /etc/grafana/provisioning
+ADD grafana/dashboards /var/lib/grafana/dashboards
 COPY grafana/grafana.ini /etc/grafana/grafana.ini
 
 # Cleanup
