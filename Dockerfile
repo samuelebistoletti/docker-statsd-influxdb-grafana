@@ -1,14 +1,14 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 
 # Default versions
-ENV TELEGRAF_VERSION 1.8.3-1
-ENV INFLUXDB_VERSION 1.7.0
-ENV GRAFANA_VERSION  5.3.2
-ENV CHRONOGRAF_VERSION 1.7.2
+ENV TELEGRAF_VERSION 1.9.4-1
+ENV INFLUXDB_VERSION 1.7.3
+ENV GRAFANA_VERSION  6.0.0
+ENV CHRONOGRAF_VERSION 1.7.8
 
 # Database Defaults
 ENV INFLUXDB_GRAFANA_DB datasource
@@ -27,37 +27,30 @@ RUN rm /var/lib/apt/lists/* -vf
 # Base dependencies
 RUN apt-get -y update && \
  apt-get -y dist-upgrade && \
- apt-get -y --force-yes install \
+ apt-get -y install \
   apt-utils \
   ca-certificates \
   curl \
   git \
   htop \
+  gnupg \
   libfontconfig \
   mysql-client \
   mysql-server \
   nano \
   net-tools \
-  openssh-server \
   supervisor \
   wget && \
- curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+ curl -sL https://deb.nodesource.com/setup_11.x | bash - && \
  apt-get install -y nodejs
 
-# Configure Supervisord, SSH and base env
+# Configure Supervisord and base env
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /root
 
-RUN mkdir -p /var/log/supervisor && \
-    mkdir -p /var/run/sshd && \
-    sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
-    echo 'root:root' | chpasswd && \
-    rm -rf .ssh && \
-    rm -rf .profile && \
-    mkdir .ssh
+RUN mkdir -p /var/log/supervisor && rm -rf .profile
 
-COPY ssh/id_rsa .ssh/id_rsa
 COPY bash/profile .profile
 
 # Configure MySql
