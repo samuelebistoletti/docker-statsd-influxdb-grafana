@@ -8,11 +8,11 @@
 
 ### Warning, breaking change: upgrade from version 1.0.x of this image is not supported, all persisted data in volumes will be lost if you delete the container.
 
-* Docker Image:      2.2.0
-* Ubuntu:            16.04
-* InfluxDB:          1.7.0
-* Telegraf (StatsD): 1.8.3-1
-* Grafana:           5.3.2
+* Docker Image:      2.3.0
+* Ubuntu:            18.04
+* InfluxDB:          1.7.3
+* Telegraf (StatsD): 1.9.4-1
+* Grafana:           6.0.0
 
 ## Quick Start
 
@@ -25,7 +25,6 @@ docker run --ulimit nofile=66000:66000 \
   -p 3003:3003 \
   -p 3004:8888 \
   -p 8086:8086 \
-  -p 22022:22 \
   -p 8125:8125/udp \
   samuelebistoletti/docker-statsd-influxdb-grafana:latest
 ```
@@ -53,14 +52,7 @@ Host		Container		Service
 3004		8888			influxdb-admin (chronograf)
 8086		8086			influxdb
 8125		8125			statsd
-22022		22        sshd
 ```
-## SSH
-
-```sh
-ssh root@localhost -p 22022
-```
-Password: root
 
 ## Grafana
 
@@ -104,5 +96,5 @@ Port: 8086
 
 ### InfluxDB Shell (CLI)
 
-1. Establish a ssh connection with the container
+1. Attach to docker container, run shell `/bin/bash`
 2. Launch `influx` to open InfluxDB Shell (CLI)

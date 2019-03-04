@@ -6,4 +6,5 @@ datasources:
     user: telegraf
     password: telegraf
     url: http://localhost:8086
+    isDefault: true
 
