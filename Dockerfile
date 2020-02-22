@@ -5,10 +5,10 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 
 # Default versions
-ENV TELEGRAF_VERSION 1.9.4-1
-ENV INFLUXDB_VERSION 1.7.3
-ENV GRAFANA_VERSION  6.0.0
-ENV CHRONOGRAF_VERSION 1.7.8
+ENV TELEGRAF_VERSION 1.13.3-1
+ENV INFLUXDB_VERSION 1.7.10
+ENV GRAFANA_VERSION  6.6.2
+ENV CHRONOGRAF_VERSION 1.8.0
 
 # Database Defaults
 ENV INFLUXDB_GRAFANA_DB datasource
@@ -40,8 +40,10 @@ RUN apt-get -y update && \
   nano \
   net-tools \
   supervisor \
-  wget && \
- curl -sL https://deb.nodesource.com/setup_11.x | bash - && \
+  wget \
+  adduser \
+  libfontconfig1 && \
+ curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
  apt-get install -y nodejs
 
 # Configure Supervisord and base env
@@ -79,7 +81,7 @@ RUN wget https://dl.influxdata.com/chronograf/releases/chronograf_${CHRONOGRAF_V
   dpkg -i chronograf_${CHRONOGRAF_VERSION}_amd64.deb
 
 # Install Grafana
-RUN wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_${GRAFANA_VERSION}_amd64.deb && \
+RUN wget https://dl.grafana.com/oss/release/grafana_${GRAFANA_VERSION}_amd64.deb && \
 	dpkg -i grafana_${GRAFANA_VERSION}_amd64.deb && rm grafana_${GRAFANA_VERSION}_amd64.deb
 
 # Configure Grafana with provisioning
