@@ -85,8 +85,8 @@ RUN wget https://dl.influxdata.com/chronograf/releases/chronograf_${CHRONOGRAF_V
 
 # Install Grafana
 
-RUN wget https://dl.grafana.com/oss/release/grafana_${GRAFANA_VERSION}_amd64.deb && \
-	dpkg -i grafana_${GRAFANA_VERSION}_amd64.deb && rm grafana_${GRAFANA_VERSION}_amd64.deb
+RUN wget https://dl.grafana.com/oss/release/grafana_${GRAFANA_VERSION}_${ARCH}.deb && \
+	dpkg -i grafana_${GRAFANA_VERSION}_${ARCH}.deb && rm grafana_${GRAFANA_VERSION}_${ARCH}.deb
 
 # Configure Grafana with provisioning
 ADD grafana/provisioning /etc/grafana/provisioning
