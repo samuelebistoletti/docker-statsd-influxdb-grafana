@@ -1,0 +1,56 @@
+version: "3.9"
+
+volumes:
+  influxdb_data: {}
+  grafana_data: {}
+
+networks:
+  private:
+    external: false
+
+services:
+  influxdb:
+    image: influxdb:${INFLUXDB_VERSION}
+    networks:
+      - private
+    ports:
+      - 8086:8086
+    healthcheck:
+      test: ["curl -f http://localhost:8086/ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+    env_file:
+      - ./influxdb/influxdb.env
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+      - ./influxdb/config.yml:/etc/influxdb2/config.yml
+
+  telegraf:
+    image: telegraf:${TELEGRAF_VERSION}
+    profiles: ["telegraf"]
+    networks:
+      - private
+    ports:
+      - 8125:8125/udp
+    restart: always
+    depends_on:
+      - influxdb
+    env_file:
+      - ./telegraf/telegraf.env
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+  grafana:
+    image: grafana/grafana-enterprise:${GRAFANA_VERSION}
+    profiles: ["grafana"]
+    networks:
+      - private
+    ports:
+      - 3000:3000
+    restart: always
+    depends_on:
+      - influxdb
+    volumes:
+      - grafana_data:/var/lib/grafana
