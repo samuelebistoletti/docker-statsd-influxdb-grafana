@@ -38,9 +38,9 @@ COMPOSE_PROFILES=grafana,telegraf docker-compose down
 ```
 Host		Container		Service
 
-3000		3000			  grafana
+3000		3000			grafana
 8086		8086		  	influxdb
-8125		8125			  statsd
+8125		8125			statsd
 ```
 
 ## Grafana
