@@ -1,5 +1,14 @@
-Docker StatsD InfluxDB Grafana image
+Docker StatsD InfluxDB Grafana integrated service
 -----------------------------------
+
+### Warning: UPGRADE FROM VERSION 2.3.0 TO VERSION 3.0.0 IS NOT POSSIBLE due internal architecture changes.
+
+## v3.0.0 (2022-03-23)
+* Full rewrite with Docker Compose service file
+* Upgraded InfluxDB to version 2.1.1
+* Upgraded Telegraf to version 1.21
+* Upgraded Grafana to version 8.4.4
+* Changed Grafana DB to Postgres with dedicated container
 
 ## v2.3.0 (2019-03-25)
 * Upgraded Telegraf to version 1.9.4-1

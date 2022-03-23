@@ -1,0 +1,32 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout
+
+      - run:
+          name: Install Docker Compose
+          environment:
+            COMPOSE_VERSION: "1.29.2"
+          command: |
+            curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+      - run:
+          name: Start Docker Compose service
+          command: COMPOSE_PROFILES=grafana,telegraf docker-compose up -d
+
+      - run:
+          name: Wait service warmup
+          command: sleep 30
+
+      - run:
+          name: Check InfluxDB is up and running
+          command: docker run --network influx-frontend appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://dsig-influx:8086/ping
+
+      - run:
+          name: Check Grafana is up and running
+          command: docker run --network influx-frontend appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://dsig-grafana:3000/api/health
