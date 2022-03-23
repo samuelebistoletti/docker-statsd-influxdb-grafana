@@ -1,13 +1,26 @@
-machine:
-  services:
-    - docker
+version: 2
+jobs:
+ build:
+   machine: true
+   steps:
+     - checkout
+     
+     - run:
+         name: Install Docker Compose
+         environment:
+           COMPOSE_VERSION: '1.29.2'
+         command: |
+           curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
+           chmod +x ~/docker-compose
+           sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
-dependencies:
-  override:
-    - docker info
+     - run: |
+         COMPOSE_PROFILES=grafana,telegraf docker-compose up -d
 
-test:
-  override:
-    - COMPOSE_PROFILES=grafana,telegraf docker-compose up -d; sleep 30
-    - curl --retry 10 --retry-delay 5 -v http://localhost:8086/ping
-    - curl --retry 10 --retry-delay 5 -v http://localhost:3000/api/health
+     - run: sleep 30
+
+     - run: docker run --network container:influx \
+            appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://influx:8086/ping
+
+     - run: docker run --network container:influx \
+            appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://grafana:3000/api/health
