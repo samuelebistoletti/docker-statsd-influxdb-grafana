@@ -1,8 +1,8 @@
-version: 2
+version: 2.1
 jobs:
   build:
     machine:
-      - image: ubuntu-2004:current
+      image: ubuntu-2004:current
     steps:
       - checkout
 
