@@ -2,24 +2,28 @@ version: "3.9"
 
 volumes:
   influxdb_data: {}
+  postgres_data: {}
   grafana_data: {}
 
 networks:
-  private:
+  influx:
+    external: false
+  postgres:
     external: false
 
 services:
   influxdb:
     image: influxdb:${INFLUXDB_VERSION}
     networks:
-      - private
+      - influx
     ports:
       - 8086:8086
     healthcheck:
-      test: ["curl -f http://localhost:8086/ping"]
+      test: ["CMD", "curl", "-f", "http://localhost:8086/ping"]
       interval: 10s
       timeout: 10s
       retries: 5
+      start_period: 40s
     restart: always
     env_file:
       - ./influxdb/influxdb.env
@@ -31,7 +35,7 @@ services:
     image: telegraf:${TELEGRAF_VERSION}
     profiles: ["telegraf"]
     networks:
-      - private
+      - influx
     ports:
       - 8125:8125/udp
     restart: always
@@ -42,15 +46,38 @@ services:
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
 
+  postgres:
+    image: bitnami/postgresql:${POSTGRES_VERSION}
+    profiles: ["grafana"]
+    networks:
+      - postgres
+    restart: always
+    env_file:
+      - ./postgres/postgres.env
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
   grafana:
     image: grafana/grafana-enterprise:${GRAFANA_VERSION}
     profiles: ["grafana"]
     networks:
-      - private
+      - postgres
+      - influx
     ports:
       - 3000:3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
     restart: always
     depends_on:
+      - postgres
       - influxdb
+    env_file:
+      - ./grafana/grafana.env
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/dashboards
