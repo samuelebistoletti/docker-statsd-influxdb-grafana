@@ -15,17 +15,12 @@ jobs:
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
       - run:
-          name: Start Docker Compose service|
-          command: COMPOSE_PROFILES=grafana,telegraf docker-compose up -d
+          name: Start and test Docker Compose service
+          command: | 
+            COMPOSE_PROFILES=grafana,telegraf docker-compose up -d
 
-      - run:
-          name: Wait service warmup
-          command: sleep 30
+            sleep 15
 
-      - run:
-          name: Test InfluxDB
-          command: docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://influx:8086/ping
+            docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://influx:8086/ping
 
-      - run:
-          name: Test Grafana
-          command: docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://grafana:3000/api/health
+            docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://grafana:3000/api/health
