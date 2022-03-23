@@ -1,4 +1,4 @@
-# Docker Image with Telegraf (StatsD), InfluxDB and Grafana
+# Docker service with Telegraf (StatsD), InfluxDB and Grafana
 
 :facepunch: Battle-tested
 
