@@ -17,9 +17,7 @@
 
 ## Quick Start
 
-First download and install the latest available version od Docker Compose
-
-```<https://docs.docker.com/compose/install/>```
+First download and install the latest available version od Docker Compose <https://docs.docker.com/compose/install/>
 
 In order to start the service the first time launch:
 
