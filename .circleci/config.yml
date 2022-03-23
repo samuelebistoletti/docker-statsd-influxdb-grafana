@@ -24,8 +24,8 @@ jobs:
 
       - run:
           name: Test InfluxDB
-          command: docker run --network container:influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://influx:8086/ping
+          command: docker run --network docker-statsd-influxdb-grafana_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://influx:8086/ping
 
       - run:
           name: Test Grafana
-          command: docker run --network container:influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://grafana:3000/api/health
+          command: docker run --network docker-statsd-influxdb-grafana_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://grafana:3000/api/health
