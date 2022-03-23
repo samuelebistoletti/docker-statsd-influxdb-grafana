@@ -16,16 +16,10 @@ jobs:
 
       - run:
           name: Start Docker Compose service
-          command: COMPOSE_PROFILES=grafana,telegraf docker-compose up -d
+          command: |
+            COMPOSE_PROFILES=grafana,telegraf docker-compose up -d
 
-      - run:
-          name: Wait service warmup
-          command: sleep 30
+            sleep 15
 
-      - run:
-          name: Test InfluxDB
-          command: docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8086/ping
-
-      - run:
-          name: Test Grafana
-          command: docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/api/health
+            docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8086/ping
+            docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/api/health
