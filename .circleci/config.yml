@@ -21,5 +21,5 @@ jobs:
 
             sleep 15
 
-            docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8086/ping
-            docker run --network project_influx appropriate/curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/api/health
+            curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8086/ping
+            curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/api/health
