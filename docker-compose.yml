@@ -61,6 +61,11 @@ services:
       - postgres_data:/bitnami/postgresql
 
   grafana:
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+      args:
+        - GRAFANA_VERSION=${GRAFANA_VERSION:-latest}
     container_name: dsig-grafana
     image: grafana/grafana-enterprise:${GRAFANA_VERSION}
     profiles: ["grafana"]
