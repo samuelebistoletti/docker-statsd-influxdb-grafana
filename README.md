@@ -38,18 +38,18 @@ COMPOSE_PROFILES=grafana,telegraf docker-compose down
 ```
 Host		Container		Service
 
-3000		3000			grafana
-8086		8086		  	influxdb
+3003		3003			grafana
+8086		8086		  influxdb
 8125		8125			statsd
 ```
 
 ## Grafana
 
-Open <http://localhost:3000>
+Open <http://localhost:3003>
 
 ```
-Username: admin
-Password: admin
+Username: root
+Password: root
 ```
 
 ### Data source on Grafana
